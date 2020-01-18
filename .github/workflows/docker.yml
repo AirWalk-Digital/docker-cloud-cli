@@ -1,0 +1,21 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build and pushthe Docker image
+      uses: AirWalk-Digital/github-action-dockerhub@master
+      env:
+        DOCKER_NAMESPACE: airwalkconsulting
+        DOCKER_IMAGE_NAME: cloud-cli
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+ 
