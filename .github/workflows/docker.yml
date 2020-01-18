@@ -11,20 +11,19 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Bump version and push tag
+      id: tag
       uses: anothrNick/github-tag-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         WITH_V: true
-    - name: Get the version
-      id: get_version
-      run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
-    - name: Publish to Registry
+
+    - name: Publish to registry
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
         name: airwalkconsulting/cloud-cli
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        tags: "latest,${{ steps.get_version.outputs.VERSION }}"
+        tags: "latest,${{ steps.tag.outputs.tag }}"
 
     # - name: Build and pushthe Docker image
     #   uses: AirWalk-Digital/github-action-dockerhub@master
